@@ -2,41 +2,23 @@ const express = require("express");
 const bodyParser = require("body-parser");
 
 const app = express();
+var item=["Buy food","Cook Food","Eat food"];
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.set('view engine', 'ejs');
 
 app.get("/", function(req, res) {
-  const d = new Date();
-  let currentDay = d.getDay();
-  var day = "";
-  switch (currentDay) {
-    case 0:
-      day = "Sunday";
-      break;
-    case 1:
-      day = "Monday";
-      break;
-    case 2:
-      day = "Tuesday";
-      break;
-    case 3:
-      day = "Wednesday";
-      break;
-    case 4:
-      day = "Thursday";
-      break;
-    case 5:
-      day = "Friday";
-      break;
-    case 6:
-      day = "Saturday";
-      break;
-    default:
-  }
-  res.render('list', {
-    curDate: day
-  });
+  var options = { weekday: 'long', month: 'long', day: 'numeric' };
+  var today  = new Date();
+  var day=today.toLocaleDateString("en-US", options);
+
+  res.render('list', {curDate: day, newListItem: item});
 });
+
+app.post("/", function(req,res){
+  item.push(req.body.newItem);
+  res.redirect("/");
+})
 
 
 
