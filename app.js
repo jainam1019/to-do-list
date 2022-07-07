@@ -1,24 +1,46 @@
-const express=require("express");
-const bodyParser=require("body-parser");
+const express = require("express");
+const bodyParser = require("body-parser");
 
-const app=express();
+const app = express();
 
-app.get("/", function(req,res){
+app.set('view engine', 'ejs');
+
+app.get("/", function(req, res) {
   const d = new Date();
-  let day = d.getDay();
-
-  if (day===0|| day===6)
-  {
-    res.send("Its a weekend");
+  let currentDay = d.getDay();
+  var day = "";
+  switch (currentDay) {
+    case 0:
+      day = "Sunday";
+      break;
+    case 1:
+      day = "Monday";
+      break;
+    case 2:
+      day = "Tuesday";
+      break;
+    case 3:
+      day = "Wednesday";
+      break;
+    case 4:
+      day = "Thursday";
+      break;
+    case 5:
+      day = "Friday";
+      break;
+    case 6:
+      day = "Saturday";
+      break;
+    default:
   }
-  else{
-    res.send("Go work you fatass");
-  }
+  res.render('list', {
+    curDate: day
+  });
 });
 
 
 
 
-app.listen(3000,function(){
-  console.log("The server started running on port 3000 at "+Date());
+app.listen(3000, function() {
+  console.log("The server started running on port 3000 at " + Date());
 });
